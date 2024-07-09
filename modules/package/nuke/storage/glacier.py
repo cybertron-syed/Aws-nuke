@@ -6,7 +6,6 @@ from botocore.exceptions import ClientError, EndpointConnectionError
 from nuke.client_connections import AwsClient
 from nuke.exceptions import nuke_exceptions
 
-
 class NukeGlacier:
     """Abstract glacier nuke in a class."""
 
@@ -82,12 +81,19 @@ class NukeGlacier:
         """
         try:
             tags = self.glacier.list_tags_for_vault(vaultName=vault_name)
-            tags_dict = {tag['Key']: tag['Value'] for tag in tags['Tags']}
-            print(f"Vault {vault_name} Tags: {tags_dict}")
-            for key, value in required_tags.items():
-                if tags_dict.get(key) != value:
-                    return False
-            return True
+            print(f"Tags response for vault {vault_name}: {tags}")
+
+            if 'Tags' in tags:
+                tags_dict = tags['Tags']
+                print(f"Vault {vault_name} Tags: {tags_dict}")
+                for key, value in required_tags.items():
+                    if tags_dict.get(key) != value:
+                        return False
+                return True
+            else:
+                print(f"No tags found for vault {vault_name}")
+                return False
+
         except ClientError as e:
             print(f"Failed to get tags for Glacier vault {vault_name}: {e}")
             return False

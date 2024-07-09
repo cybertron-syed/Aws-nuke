@@ -6,7 +6,6 @@
 variable "cloudwatch_schedule_expression" {
   description = "Define the aws cloudwatch event rule schedule expression"
   type        = string
-  default     = "cron(0 22 ? * MON-FRI *)"
 }
 
 variable "name" {
@@ -30,25 +29,21 @@ variable "kms_key_arn" {
 variable "aws_regions" {
   description = "A list of one or more aws regions where the lambda will be apply, default use the current region"
   type        = list(string)
-  default     = ["ap-south-1"]
 }
 
 variable "include_resources" {
   description = "Define the resources that will be destroyed"
   type        = string
-  default     = "s3"
 }
 
 variable "exclude_resources" {
   description = "Define the resources that will not be destroyed"
   type        = string
-  default     = null
 }
 
 variable "older_than" {
   description = "Only destroy resources that were created before a certain period"
   type        = string
-  default     = "0d"
 }
 
 variable "tags" {
@@ -60,6 +55,4 @@ variable "tags" {
 variable "required_tags" {
   description = "Comma-separated list of required tags in the format key=value"
   type        = string
-  default     = "env=develop"
-  # default     = null
 }
